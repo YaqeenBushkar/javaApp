@@ -2,21 +2,23 @@ import java.awt.event.ActionEvent;
 
 import java.awt.event.ActionListener;
 
+import javax.swing.JOptionPane;
+
  
 
 public class Controller {
 
-    private View theView;
+    private  SimpleCalc View;
 
-    private Model theModel;
+    private  Model model;
 
-    public Controller(View theView, Model theModel) {
+    public Controller(SimpleCalc View,  Model model) {
 
-        this.theView = theView;
+        this.View = View;
 
-        this.theModel = theModel;
+        this.model = model;
 
-        this.theView.addCalculateListener(new CalculatorListener());
+        this.View.calcListener(new CalculatorListener());
 
     }
 
@@ -24,23 +26,49 @@ public class Controller {
 
         public void actionPerformed(ActionEvent e) {
 
-            double firstNumber, secondNumber ,tnum,fnum,finum,snum,senum,einum , res =0.0;
+            double firstNumber, secondNumber ,  res =0.0; String k;
 
-            try{
-                    
-                firstNumber = theView.getFirstNumber();
-                secondNumber = theView.getSecondNumber();
-                res= theModel.addTwoNumbers(firstNumber, secondNumber);
-                  theView.setResult(res);
+            try{  
+            	if(e.getActionCommand()==("+")){
+                firstNumber = View.getnum1();
+                secondNumber = View.getnum2();
+                res= model.addTwoNumbers(firstNumber, secondNumber);
+                  View.setResult(res); 
                 
-                  
+            	}
+            	
+            	else if(e.getActionCommand()==("-")){
+            		
+            	    	 firstNumber = View.getnum1();
+                         secondNumber = View.getnum2();
+                         if(secondNumber >0.0){
+                         res= model.stractTwoNumbers(firstNumber, secondNumber);
+                           View.setResult(res);}
+                         else {
+                        	 JOptionPane.showMessageDialog(null, "you canot divide over zero");
+                         }
+            	}
+            	
+            	else if (e.getActionCommand()==("*")){
+            		firstNumber = View.getnum1();
+                         secondNumber = View.getnum2();
+                         res= model.multiTwoNumbers(firstNumber, secondNumber);
+                           View.setResult(res);
+            	}
+            	if(e.getActionCommand()==("/")){
+            	    	 firstNumber = View.getnum1();
+                         secondNumber = View.getnum2();
+                         res= model.divideTwoNumbers(firstNumber, secondNumber);
+                           View.setResult(res);
+            	     
+            	}
             }
  
           catch(NumberFormatException ex){
 
                 System.out.println(ex);
 
-                theView.displayErrorMessage("You Need to Enter 2 Integers");
+                View.displayErrorMessage("You Need to Enter 2 Integers");
 
             }
       }
@@ -48,3 +76,4 @@ public class Controller {
     }
 
 }
+
